@@ -1,7 +1,7 @@
 # Sample Snack app
 
-
-creo il file dove inserire i dati delle carte da inserire `data.js`
+## Separiamo i dati delle "schede|card" dal codice 
+creo il file `data.js` dove inserire i dati delle carte da inserire 
 
 ```
 const data = [
@@ -27,9 +27,11 @@ const data = [
 
 export default data;
 ```
+"data" è un Array di oggetti i cui attributi descrivono le varie schede da mostrare nella schermata.
+
 Importo i dati nel mio file App.js `import data from './data';`
 
-Abbiamo quindi eliminato i due componenti AssetExample in favore di una mappatura del data array usando il metodo map(). In questo modo, creiamo una AssetExample card per ogni elemento nel data array, passando il titolo e l'immagine come proprietà. Infine, abbiamo anche aggiunto una key univoca a ogni AssetExample card.
+eliminiamo i due componenti "AssetExample" in favore di una "mappatura" del data array usando il metodo map() di un Array. In questo modo, creiamo una AssetExample card per ogni elemento nel data array, passando il titolo e l'immagine come proprietà. Infine, abbiamo anche aggiunto una key univoca a ogni AssetExample card.
 
 In questo modo per inserire un quarto elemento, sarà sufficiente aggiungerlo nel file `data.js`
 ```
@@ -47,6 +49,7 @@ Ma...
 
 Aggiungendo un altra Card non abbiamo sufficiente spazio nello schermo...
 
+## Rendiamo la schermata Scrollabile
 Per poter Scrollare su e giù possiamo usare una "View" chiamata "ScrollView"
 ```
 export default function App() {
@@ -84,7 +87,7 @@ Ho sostituito ScrollView con FlatList e ho usato la prop "data" per passare i da
 
 La FlatList è una scelta migliore rispetto alla ScrollView quando si tratta di visualizzare grandi quantità di dati in una lista scrollabile, poiché rende più efficiente il rendering degli elementi e migliora le prestazioni dell'applicazione. La FlatList inoltre offre una serie di funzionalità utili, come la possibilità di caricare dinamicamente nuovi dati all'infinito o di effettuare rinfreschi dei dati mediante il gesto di pull-to-refresh.
 
-
+## Modifichiamo il layout per disporre le schede su due colonne
 Supponiamo ora di voler disporre le "card" con un layout a 2 colonne
 
 Nella FlatList:
@@ -105,7 +108,7 @@ abbiamo aggiunto il nuovo stile "cardContainer" per posizionare ogni elemento ne
     padding: 5,
   },
   ```
-# :orange_book: NOTA sulla sintassi del codice sopra
+### :orange_book: NOTA sulla sintassi del codice sopra
 Avrei potuto scrivere il codice sopra con la seguente sintassi:
 ```diff
 !        renderItem={( elem ) => {
@@ -120,9 +123,9 @@ Notiamo 2 differenze, la PRIMA:
 -        renderItem={({ item }) => 
 
 elem è l'oggetto che viene passato alla funzione ed ha la seguente struttura:
-@@ item:{id:1,title:"EXPO",image:1,description:"Description of EXPO"}
-@@ index:0
-@@ separators:{}
+@@ item:{id:1,title:"EXPO",image:1,description:"Description of EXPO"} @@
+@@ index:0                                                            @@
+@@ separators:{}                                                      @@
 
 A noi interessa solo "elem.item" con la sintassi 
 + ({ item }) => 
@@ -137,6 +140,7 @@ Visto che l'unica instruzione della funzione è "{return()}"
 posso omettere le parentesi graffe e il nome della funzione "return"
 Quindi posso sostituire "{return()}" con "()"
 ```
+## Snelliamo App.js
 Per snellire un pò il codice spostiamo gli stili in un file `styles.js`
 ```
 import { StyleSheet } from 'react-native';
@@ -150,29 +154,30 @@ export default styles = StyleSheet.create({
  ```
  import styles from './styles'
 ```
-
+## Rendiamo le schede interattive
 Un altra cosa che potremmo aggiungere alla nostra APP, è che una volta selezionato una scheda, questa si APRE mostrando alcuni dettagli riguardo la scheda stessa.
 
+### Selezione di una scheda mediamte il tocco
 Per fare questo possiamo usare un componente chiamato `<TouchableOpacity` che racchiude la nostra CARD e a cui possimo passare alcune "props": `onPress={() => props.onPress(props)}` e `activeOpacity={0.8}`
     
 Quindi il nostro AssetExample avrà la seguente struttura:
 
-```
+```diff
 function AssetExample(props) {
   const immagine = props.img ? props.img : require('./assets/snack-icon.png');
 
   return (
-    <TouchableOpacity
-      onPress={() => props.quandoPremuto(props)}
-      activeOpacity={0.8}
-    >
++    <TouchableOpacity
++      onPress={() => props.quandoPremuto(props)}
++      activeOpacity={0.8}
++    >
       <Card style={styles.card}>
         <View style={styles.compContainer}>
           <Text style={styles.compParagraph}>{props.title}</Text>
           <Image style={styles.logo} source={immagine} />
         </View>
       </Card>
-    </TouchableOpacity>
++   </TouchableOpacity>
   );
 }
 ```
@@ -182,21 +187,21 @@ In particolare, quando l'utente preme sulla "card", viene chiamata la funzione "
 
 La funzione "props.quandoPremuto()" viene definita nel componente padre App e prende come argomento l'oggetto props della "card" che è stata premuta.
 
-Nel componente padre "App", quando andiamo a renderizzare l'AssetExample andiamo a specificare la funzione che deve essere eseguita quando premiamo la "card"
-```
+Nel componente padre ("App"), quando andiamo a renderizzare l'AssetExample, andiamo a specificare la funzione che deve essere eseguita quando premiamo la "card"
+```diff
 export default function App() {
   ...
 
     <AssetExample
       title={item.title}
       img={item.image}
-      onPress={(item) => console.log(item)}
++     onPress={(item) => console.log(item)}
     />
   );
   ...
   ```
 
-  *** gli STATI
+## gli STATI
   Gli "stati"(state) in React sono dei contenitori(variabili) di dati che possono essere aggiornati e influenzare il rendering degli elementi dell'interfaccia. 
   
   Con la riga di comando `const [selectedItem, setSelectedItem] = useState(null);`, stiamo dichiarando un nuovo state chiamato "selectedItem" e un metodo per aggiornarlo chiamato "setSelectedItem". 
@@ -209,6 +214,7 @@ Per usare gli stati dobbiamo importartli:
 
 `import React, { useState } from 'react';`
 
+## Hooks
 "useState" è un Hook di React che consente di aggiungere uno state locale a un componente funzionale. Questo hook restituisce un array con due elementi: il primo elemento è il valore dello state, mentre il secondo elemento è una funzione per aggiornare il valore dello state. In pratica, useState è una funzione che viene utilizzata per mantenere lo stato interno di un componente funzionale e aggiornarlo, quando necessario, a seguito di eventi o interazioni dell'utente.
 
 Se volessimo modificare il titolo della "card" selezionata, potremmo fare nel seguente modo:
