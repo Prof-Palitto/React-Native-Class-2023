@@ -1,5 +1,6 @@
 # Sample Snack app
 
+
 creo il file dove inserire i dati delle carte da inserire `data.js`
 
 ```
@@ -104,7 +105,38 @@ abbiamo aggiunto il nuovo stile "cardContainer" per posizionare ogni elemento ne
     padding: 5,
   },
   ```
+# :orange_book: NOTA sulla sintassi del codice sopra
+Avrei potuto scrivere il codice sopra con la seguente sintassi:
+```diff
+!        renderItem={( elem ) => {
+!          return(
+!          <View style={styles.cardContainer}>
+!            <AssetExample title={elem.item.title} img={elem.item.image} />
+!          </View>
+!        )}}
 
+Notiamo 2 differenze, la PRIMA:
++        renderItem={( elem ) =>
+-        renderItem={({ item }) => 
+
+elem è l'oggetto che viene passato alla funzione ed ha la seguente struttura:
+@@ item:{id:1,title:"EXPO",image:1,description:"Description of EXPO"}
+@@ index:0
+@@ separators:{}
+
+A noi interessa solo "elem.item" con la sintassi 
++ ({ item }) => 
+estraiamo "item" dall'oggetto "elem"
+
+la SECONDA differenza
+- => (
++ => {
++          return(
+
+Visto che l'unica instruzione della funzione è "{return()}"
+posso omettere le parentesi graffe e il nome della funzione "return"
+Quindi posso sostituire "{return()}" con "()"
+```
 Per snellire un pò il codice spostiamo gli stili in un file `styles.js`
 ```
 import { StyleSheet } from 'react-native';
@@ -122,8 +154,9 @@ export default styles = StyleSheet.create({
 Un altra cosa che potremmo aggiungere alla nostra APP, è che una volta selezionato una scheda, questa si APRE mostrando alcuni dettagli riguardo la scheda stessa.
 
 Per fare questo possiamo usare un componente chiamato `<TouchableOpacity` che racchiude la nostra CARD e a cui possimo passare alcune "props": `onPress={() => props.onPress(props)}` e `activeOpacity={0.8}`
-    >
+    
 Quindi il nostro AssetExample avrà la seguente struttura:
+
 ```
 function AssetExample(props) {
   const immagine = props.img ? props.img : require('./assets/snack-icon.png');
