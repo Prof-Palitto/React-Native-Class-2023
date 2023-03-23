@@ -10,12 +10,14 @@ import {
 } from 'react-native';
 import Constants from 'expo-constants';
 import { Card } from 'react-native-paper';
-import data from './data';
 import styles from './styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
 function AssetExample(props) {
-  const immagine = props.img ? props.img : require('./assets/snack-icon.png');
+  const immagine = props.img == 'N/A' ? require('./assets/snack-icon.png') : `{uri: '${props.img}'}`;
+
+
+  console.log('TITLE: ' + props.title)
 
   return (
     <TouchableOpacity
@@ -26,7 +28,7 @@ function AssetExample(props) {
           <Text style={styles.compParagraph}>
             {props.selected ? `SELEZIONATO: ${props.title}` : props.title}
           </Text>
-          <Image style={styles.logo} source={immagine} />
+          <Image style={styles.logo} source={{uri: props.img}} />
         </View>
       </Card>
     </TouchableOpacity>
@@ -34,13 +36,31 @@ function AssetExample(props) {
 }
 
 export default function App() {
+  const API_URL = 'http://www.omdbapi.com/?i=tt3896198&apikey=c4bfce58';
   const [selectedItem, setSelectedItem] = useState(null);
   const [text, setText] = useState();
+  const [movies, setMovies] = useState();
+
+  const searchMovie = async () => {
+    console.log('seachMovie with title: ' + text);
+    if (text) {
+      const response = await fetch(`${API_URL}&s=${text}`);
+      const data = await response.json();
+
+      console.log(data.Search);
+      setMovies(data.Search);
+    } else {
+      setMovies([]);
+    }
+  };
+
   const handleSubmit = () => {
     console.log('SUBMIT: ' + text);
+    searchMovie();
     inputText = '';
     setText('');
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.search}>
@@ -51,29 +71,32 @@ export default function App() {
           onSubmitEditing={handleSubmit}
           onChangeText={setText}
           value={text}></TextInput>
-        <TouchableOpacity
-          onPress={handleSubmit}>
+        <TouchableOpacity onPress={handleSubmit}>
           <MaterialIcons name="search" size={24} color="white" />
         </TouchableOpacity>
       </View>
 
       <FlatList
         numColumns={2}
-        data={data}
+        data={movies}
         renderItem={({ item }) => {
-          console.log(item);
+          //console.log(item);
           return (
             <View style={styles.cardContainer}>
               <AssetExample
-                title={item.title}
-                img={item.image}
-                quandoPremuto={() => (selectedItem && selectedItem.id === item.id) ? setSelectedItem(null) : setSelectedItem(item)}
-                selected={selectedItem && selectedItem.id === item.id}
+                title={item.Title}
+                img={item.Poster}
+                quandoPremuto={() =>
+                  selectedItem && selectedItem.imdbID === item.imdbID
+                    ? setSelectedItem(null)
+                    : setSelectedItem(item)
+                }
+                selected={selectedItem && selectedItem.imdbID === item.imdbID}
               />
             </View>
           );
         }}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.imdbID.toString()}
       />
     </View>
   );
