@@ -4,7 +4,6 @@ import {
   Button,
   Text,
   View,
-  StyleSheet,
   Image,
   FlatList,
   TouchableOpacity,
@@ -18,10 +17,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import CustomButton from './components/myButton';
 
 function AssetExample(props) {
-  const immagine = props.info.img
-    ? props.info.img
-    : require('./assets/snack-icon.png');
-  console.log(props);
+//  console.log(props);
   return (
     <TouchableOpacity
       onPress={() => props.quandoPremuto(props)}
@@ -50,7 +46,7 @@ function AssetExample(props) {
 }
 
 export default function App() {
-  const API_URL = 'http://www.omdbapi.com/?i=tt3896198&apikey=c4bfce58';
+  const API_URL = 'http://www.omdbapi.com/?apikey=c4bfce58';
   const [selectedItem, setSelectedItem] = useState(null);
   const [text, setText] = useState();
   const [modalVisible, setModalVisible] = useState(false);
@@ -62,12 +58,25 @@ export default function App() {
       const response = await fetch(`${API_URL}&s=${text}`);
       const data = await response.json();
 
-      console.log(data.Search);
+      //console.log(data.Search);
       setMovies(data.Search);
     } else {
       setMovies([]);
     }
   };
+  const getMovieInfo = async(imdbID) => {
+    console.log('getMovieInfo: ' + imdbID);
+    if (imdbID) {
+      const response = await fetch(`${API_URL}&i=${imdbID}`);
+      const data = await response.json();
+
+      console.log('PLOT: '+data.Plot);
+      return(data);
+    } else {
+      return({});
+    }
+
+  }
   const handleSubmit = () => {
     console.log('SUBMIT: ' + text);
     searchMovie();
@@ -93,12 +102,14 @@ export default function App() {
         numColumns={2}
         data={movies}
         renderItem={({ item }) => {
-          console.log(item);
+          //console.log(item);
           return (
             <View style={styles.cardContainer}>
               <AssetExample
                 info={item}
-                quandoPremuto={() => {
+                quandoPremuto={async() => {
+                  const movieInfo = await getMovieInfo(item.imdbID)
+                  setDescription(movieInfo.Plot)
                   setModalVisible(true);
                   setSelectedItem(item);
                 }}
