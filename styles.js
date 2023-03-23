@@ -53,4 +53,11 @@ export default  styles = StyleSheet.create({
     fontWeight: 'bold',
     
   },
+  footer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 10,
+    fontSize: 10,
+    fontWeight: 'bold',
+  },
 });
