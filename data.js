@@ -15,7 +15,7 @@ const data = [
     id: 3,
     title: 'Pizza',
     image: require('./assets/pizza.png'),
-    description: 'Description of Pizza',
+    description: 'Pincopalla of Pizza',
   },
   {
     id: 4,

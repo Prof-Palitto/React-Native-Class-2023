@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import {
+  Modal,
+  Button,
   Text,
   View,
   StyleSheet,
@@ -13,7 +15,7 @@ import { Card } from 'react-native-paper';
 import data from './data';
 import styles from './styles';
 import { MaterialIcons } from '@expo/vector-icons';
-
+import CustomButton from './components/myButton';
 function AssetExample(props) {
   const immagine = props.img ? props.img : require('./assets/snack-icon.png');
 
@@ -27,6 +29,7 @@ function AssetExample(props) {
             {props.selected ? `SELEZIONATO: ${props.title}` : props.title}
           </Text>
           <Image style={styles.logo} source={immagine} />
+          {props.details && <Text style={styles.compParagraph}>{props.details}</Text>}
         </View>
       </Card>
     </TouchableOpacity>
@@ -36,6 +39,7 @@ function AssetExample(props) {
 export default function App() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [text, setText] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
   const handleSubmit = () => {
     console.log('SUBMIT: ' + text);
     inputText = '';
@@ -51,8 +55,7 @@ export default function App() {
           onSubmitEditing={handleSubmit}
           onChangeText={setText}
           value={text}></TextInput>
-        <TouchableOpacity
-          onPress={handleSubmit}>
+        <TouchableOpacity onPress={handleSubmit}>
           <MaterialIcons name="search" size={24} color="white" />
         </TouchableOpacity>
       </View>
@@ -67,7 +70,10 @@ export default function App() {
               <AssetExample
                 title={item.title}
                 img={item.image}
-                quandoPremuto={() => (selectedItem && selectedItem.id === item.id) ? setSelectedItem(null) : setSelectedItem(item)}
+                quandoPremuto={() => {
+                  setModalVisible(true);
+                  setSelectedItem(item);
+                }}
                 selected={selectedItem && selectedItem.id === item.id}
               />
             </View>
@@ -75,6 +81,51 @@ export default function App() {
         }}
         keyExtractor={(item) => item.id.toString()}
       />
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+        transparent={true}>
+        <View style={{ flex: 0.9 }}>
+          <View
+            style={{
+              borderColor: 'black',
+              borderWidth: 2,
+              margin: 50,
+              marginTop: 100,
+              backgroundColor: 'orange',
+              alignItems: 'center',
+              paddingTop: 20,
+              paddingBottom: 60,
+            }}>
+            {selectedItem && (
+              <AssetExample
+                title={selectedItem.title}
+                img={selectedItem.image}
+                details={selectedItem.description}
+                quandoPremuto={() => {
+                  console.log('PREMUTO');
+                }}
+              />
+            )}
+            <CustomButton
+              name="close"
+              onPress={() => {
+                setModalVisible(false);
+                setSelectedItem(null);
+              }}
+            />
+          </View>
+          <TouchableOpacity
+            style={{ margin: 20 }}
+            onPress={() => {
+              setModalVisible(false);
+              setSelectedItem(null);
+            }}>
+            <MaterialIcons name="close" size={24} color="black" />
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 }
