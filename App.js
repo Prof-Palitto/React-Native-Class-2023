@@ -6,20 +6,26 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  TextInput,
 } from 'react-native';
 import Constants from 'expo-constants';
 import { Card } from 'react-native-paper';
 import data from './data';
 import styles from './styles';
+import { MaterialIcons } from '@expo/vector-icons';
 
 function AssetExample(props) {
   const immagine = props.img ? props.img : require('./assets/snack-icon.png');
-console.log(props)
+
   return (
-    <TouchableOpacity onPress={() => props.onPress(props)} activeOpacity={0.8}>
-      <Card style={styles.card}>
+    <TouchableOpacity
+      onPress={() => props.quandoPremuto(props)}
+      activeOpacity={0.8}>
+      <Card>
         <View style={styles.compContainer}>
-          <Text style={styles.compParagraph}>{props.selected ? `SELEZIONATO: ${props.title}` : props.title}</Text>
+          <Text style={styles.compParagraph}>
+            {props.selected ? `SELEZIONATO: ${props.title}` : props.title}
+          </Text>
           <Image style={styles.logo} source={immagine} />
         </View>
       </Card>
@@ -29,26 +35,46 @@ console.log(props)
 
 export default function App() {
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [text, setText] = useState();
+  const handleSubmit = () => {
+    console.log('SUBMIT: ' + text);
+    inputText = '';
+    setText('');
+  };
   return (
     <View style={styles.container}>
-      <Text style={styles.paragraph}>LA MIA PRIMA APP</Text>
-<FlatList
-  data={data}
-  numColumns={2}
-  renderItem={({ item }) => (
-    <View style={styles.cardContainer}>
-      <AssetExample
-        title={item.title}
-        img={item.image}
-        selected={selectedItem && selectedItem.id === item.id}
-        onPress={() => setSelectedItem(item)}
+      <View style={styles.search}>
+        <TextInput
+          style={styles.input}
+          placeholder="LA MIA PRIMA APP"
+          returnKeyType="search"
+          onSubmitEditing={handleSubmit}
+          onChangeText={setText}
+          value={text}></TextInput>
+        <TouchableOpacity
+          onPress={handleSubmit}>
+          <MaterialIcons name="search" size={24} color="white" />
+        </TouchableOpacity>
+      </View>
+
+      <FlatList
+        numColumns={2}
+        data={data}
+        renderItem={({ item }) => {
+          console.log(item);
+          return (
+            <View style={styles.cardContainer}>
+              <AssetExample
+                title={item.title}
+                img={item.image}
+                quandoPremuto={() => (selectedItem && selectedItem.id === item.id) ? setSelectedItem(null) : setSelectedItem(item)}
+                selected={selectedItem && selectedItem.id === item.id}
+              />
+            </View>
+          );
+        }}
+        keyExtractor={(item) => item.id.toString()}
       />
-    </View>
-  )}
-  keyExtractor={(item) => item.id.toString()}
-  contentContainerStyle={styles.scrollContainer}
-/>
     </View>
   );
 }

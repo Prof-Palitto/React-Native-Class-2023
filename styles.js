@@ -1,27 +1,20 @@
+import React from 'react';
 import { StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
-export default styles = StyleSheet.create({
+export default  styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     paddingTop: Constants.statusBarHeight,
-    backgroundColor: '#ecf0f1',
-    padding: 33,
+    backgroundColor: 'gray',
+    padding: 8,
   },
   paragraph: {
     margin: 24,
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
-  },
-  card: {
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-    cardContainer: {
-    flex: 0.5,
-    padding: 5,
   },
   compContainer: {
     alignItems: 'center',
@@ -39,7 +32,25 @@ export default styles = StyleSheet.create({
     height: 128,
     width: 128,
   },
-  scrollContainer: {
-    flexGrow: 1,
+  cardContainer: {
+    flex: 0.5,
+    padding: 5,
+  },
+  input: {
+    width: '85%',
+    color: 'white',
+    borderColor: 'white',
+    height: 40,
+    borderWidth: 1,
+    padding: 10,
+    marginRight: 20,
+  },
+  search: {
+    width: '90%',
+    margin: 20,
+    flexDirection: 'row',
+    fontSize: 18,
+    fontWeight: 'bold',
+    
   },
 });
