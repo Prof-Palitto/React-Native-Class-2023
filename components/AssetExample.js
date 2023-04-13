@@ -1,17 +1,14 @@
 import * as React from 'react';
 import { Text, View, StyleSheet, Image } from 'react-native';
-import { Card } from 'react-native-paper';
 
 export default function AssetExample() {
   return (
-      <Card>
     <View style={styles.container}>
       <Text style={styles.paragraph}>
-        EXPO
+        Local files and assets can be imported by dragging and dropping them into the editor
       </Text>
       <Image style={styles.logo} source={require('../assets/snack-icon.png')} />
     </View>
-      </Card>
   );
 }
 

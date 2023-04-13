@@ -1,14 +1,11 @@
-# React-Native Class
-NOTA: Il materiale per le lezioni si travano nella [WiKi](https://github.com/Prof-Palitto/React-Native-Class-2023/wiki)
+# Sample Snack app
 
-In questo corso imparerai ad usare React Native, la libreria di Javascript, open source utilizzata per la realizzazione di APP per mobile come Facebook, Facebook Ads, Instagram, Skype, Discord e molte altre.
+Open the `App.js` file to start writing some code. You can preview the changes directly on your phone or tablet by scanning the **QR code** or use the iOS or Android emulators. When you're done, click **Save** and share the link!
 
-Grazie a React Native potrai creare applicazioni mobile cross-platform, sia per iOS che per Android. Se avete già esperienza con HTML e JavaScript, avete un buon punto di partenza per imparare React Native.
+When you're ready to see everything that Expo provides (or if you want to use your own editor) you can **Download** your project and use it with [expo-cli](https://docs.expo.io/get-started/installation).
 
-Durante il corso svilupperemo insieme 2 applicazioni di esempio: la prima “Movie Search” e la seconda ”Punti di Raccolta Tappi”, che realizzeremo partendo da zero fino alla generazione dei file APK per l’installazione delle applicazioni sui nostri smartphone.
+All projects created in Snack are publicly available, so you can easily share the link to this project via link, or embed it on a web page with the `<>` button.
 
-La seconda applicazione è stata commissionata da un’associazione umanitaria internazionale (Lions) e verrà usata per scopi logistici per la raccolta di tappi i cui ricavati, una volta venduti, verranno utilizzati per il finanziamento per un centro di accoglienza degli ospiti dell’ospedale a Candiolo.
+If you're having problems, you can tweet to us [@expo](https://twitter.com/expo) or ask in our [forums](https://forums.expo.io/c/snack).
 
-La seconda applicazione verrà sviluppata insieme durante il corso, ma verranno costituiti dei gruppi di lavoro che proporranno la propria personalizzazione. L’applicazione scelta dall’associazione verrà premiata e riconosciuta a livello di istituto e a livello dell’associazione. Inoltre
-
-l’applicazione verrà pubblicata sul "Play Store" e “App Store”.
+Snack is Open Source. You can find the code on the [GitHub repo](https://github.com/expo/snack).
