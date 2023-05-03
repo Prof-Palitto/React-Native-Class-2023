@@ -81,7 +81,7 @@ export default function App() {
         end = centro.coordinates.lat + ',' + centro.coordinates.lng;
 
         // accedo alle API di Google Maps per ricavare la distanza e tempo di percorrenza
-        const URL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${start}&destinations=${end}&key=AIzaSyB5Pqu48PquPp9lAb6Upxn8jVku0lORJVY`;
+        const URL = `https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=${start}&destinations=${end}&key=YOURKEY`;
 
         fetch(URL) // eseguo l'accesso alle API
           .then((response) => response.json()) // ricevo la risposta in formato JSON e lo converto in oggetto
